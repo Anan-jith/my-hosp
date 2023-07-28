@@ -35,9 +35,10 @@
     justify-content: space-evenly;
     align-items: flex-start;
     color: black;
-    background-image: url("https://wallpaperaccess.com/full/1282798.jpg");
+    background-image: url("https://cdn.dribbble.com/users/3726898/screenshots/15468954/media/b3a0f8865b485187e200839facdc22ac.gif");
     background-size: 100%;
     height: 50rem;
+    
     margin-bottom: 1rem;
 
 
@@ -70,20 +71,34 @@ a{
     margin-right: 700px;
     margin-top: 180px;
 }
-.dep{
+.real{
+    display: flex;
+    position: absolute;
+    
+}
+.card2{
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.card5{
+    
+}
 
 
       
-}
-.card{
+
+/* .card{
     
     margin-top: 100px;
     position: absolute;
-    margin-left: 50rem;
-    
+    margin-left: 50rem; 
+     */
 
-    
-}
+
 .card-body{
     background-color:  #4aa189;
     

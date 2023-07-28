@@ -50,7 +50,7 @@ const navigator=useNavigate()
   return (
     <>
 
-  <div>
+  <div className='real'>
 
     {value.map((item)=>{
 return(

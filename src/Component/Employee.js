@@ -1,81 +1,66 @@
+import React,{useState, useEffect} from 'react'
+// import SideNav from './SideNav';
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import FileBase64 from 'react-file-base64';
-import { useNavigate } from 'react-router-dom';
-
-
+import FileBase64 from 'react-file-base64'
+// import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Departments() {
 
-  const [dept,setdept]=useState([])
-  const [value,setvalue]=useState('')
-  const [deptname,setdeptname]=useState('')
-  const[head,sethead]=useState({})
-  const navigator=useNavigate();
+  const[value,setvalue]=useState({})
+  // const {depname}=useParams()
+  // console.log(depname,'iddddddd');
 
-    useEffect(()=>{
-      const token = localStorage.getItem('token');
-      
-       if(token==''){
-        navigator('/login')
-       }        
-    },[])
+  const [getdata,setGetdata]=useState([])
+  const [depdata,setdepdata]=useState('')
+  const [resdata,setresdata]=useState('')
 
-  const [resdata,setresdata]=useState([])
-  
 
   useEffect(()=>{
-  if(deptname){
-
-    
-    axios.get(`http://localhost:3001/admin/view_head/${deptname}`).then(({data})=>{
-      console.log(data,'head')
-      sethead(data)
-      console.log(head.DEPARTMENT_HEAD);
-      
-      
+    axios.get('http://localhost:3001/admin/view_department').then(({data})=>{
+      setGetdata(data)
+      console.log(data,'dept');
     })
-  }
-    
   },[])
 
-  useEffect(()=>{
-    
 
-      axios.get('http://localhost:3001/admin/view_department').then(({data})=>{
-        setdept(data)
-        // console.log(data,'deptdata')
-        
-      })
-    
-  },[])
+  const handleChange= async (event)=>{
 
-  
+    setvalue({...value,[event.target.name]:event.target.value})
+    console.log(value);
 
-
-const handlechange=(event)=>{
-  console.log('onchange running');
-  setvalue({...value,[event.target.name]:event.target.value})
-  console.log(value,"changed");
-  if(event.target.name=='Dname'){
-    console.log(event.target.value);
-    setdeptname(event.target.value)
-    console.log(deptname);
+    if(
+      event.target.name=='dp'){
+      console.log('department selected');
+      setdepdata(event.target.value)
+      console.log(depdata,'department stored');
+      }
 
   }
-}
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  // console.log(value);
+ useEffect(() => {
+  if (depdata) {
+    axios.get(`http://localhost:3001/admin/dept/${depdata}`).then(({data})=>{
+      setresdata(data);
+      console.log(data, '...s............s');
+    }).catch((error) => {
+      console.error(error);
+      // Handle error if necessary
+    });
+  }
+}, [depdata]);
+  console.log(depdata,'.//////////');
+
+ 
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     await axios.post('http://localhost:3001/admin/addemp',value).then(({data})=>{
       console.log(data);
-})
 
-}
+    })
 
-
-
+  }
 
 
   return (
@@ -86,43 +71,43 @@ const handleSubmit = async (event) => {
         <form className='form' onSubmit={handleSubmit}>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label"> EMPLOYEE NAME</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.empname} name='empname' onChange={handlechange}></input>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.empname} name='empname' onChange={handleChange}></input>
     <div id="emailHelp" class="form-text"></div>
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">DATE OF BIRTH</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.year} name='year' onChange={handlechange}></input>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.year} name='year' onChange={handleChange}></input>
     <div id="emailHelp" class="form-text"></div>
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">AGE</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.age} name='age' onChange={handlechange}></input>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.age} name='age' onChange={handleChange}></input>
     <div id="emailHelp" class="form-text"></div>
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">EMPLOYEE NUMBER</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.number} name='number' onChange={handlechange}></input>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.number} name='number' onChange={handleChange}></input>
     <div id="emailHelp" class="form-text"></div>
     
     <div class="dropdown">
   <button class="btn btn-success dropdown-toggle" type="button"  aria-expanded="false">
     DEPARTMENTS
   </button>
-  <select value={setvalue.Dname} name='Dname' onChange={handlechange} class="form-select">
-    <option></option>
-    {dept.map((item)=>{
-      console.log(item);
-      return(
-    
-       <option value={item.DEPARTMENT}>{item.DEPARTMENT}</option>
-      )
-    })}
- 
-</select>
-<h1></h1>
-    <input type='text' placeholder={head.DEPARTMENT_HEAD} name='Hname' value={resdata.name} readOnly></input>
 
-    
+  <div style={{marginTop:'30px'}}>
+  <select name='dp' onChange={handleChange} value={setvalue.dp}  >
+   {getdata.map((item)=>{
+        return(
+    <option >{item.DEPARTMENT}</option>
+
+    )
+  })}
+  </select>
+</div>  
+<div >
+          <p> Report To:</p>
+           <input className='link' style={{marginTop:'-60px'}} placeholder={resdata.DEPARTMENT_HEAD}></input>
+           </div>
     
     
   </div>
@@ -140,7 +125,7 @@ const handleSubmit = async (event) => {
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">DESCRIPTION</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.DESC} name='DECS' onChange={handlechange}></input>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={setvalue.DESC} name='DECS' onChange={handleChange}></input>
     <div id="emailHelp" class="form-text"></div>
   </div>
  <img src={value.image} className='images'></img>

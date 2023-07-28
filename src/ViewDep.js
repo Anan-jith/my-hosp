@@ -53,7 +53,7 @@ setvalue(data)
 
     {value.map((item)=>{
 return(
-  <div class="card">
+  <div class="card2">
   <h5 class="card-header">Department: {item.DEPARTMENT}</h5>
   <div class="card-body">
     <img src={item.image}></img>

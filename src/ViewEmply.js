@@ -50,7 +50,7 @@ console.log(data,'aaaaaaaaaaaaaaaaaaaaa');
   <div>
     {value.map((item)=>{
 return(
-  <div class="card">
+  <div class="card5">
   <h5 class="card-header">EMPLOYEE NAME: {item.empname}</h5>
   <div class="card-body">
     <img src={item.image}></img>
